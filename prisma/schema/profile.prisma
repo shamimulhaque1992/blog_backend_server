@@ -1,0 +1,9 @@
+model Profile {
+    id           String   @id @default(uuid())
+    profilePhoto String   @db.VarChar(255)
+    bio          String
+    createAt     DateTime @default(now())
+    updatedAt    DateTime @updatedAt()
+
+    userId String @unique
+}

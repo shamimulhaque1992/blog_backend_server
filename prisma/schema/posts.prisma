@@ -1,0 +1,11 @@
+model Posts {
+    id          String   @id @default(uuid())
+    title       String   @db.VarChar(255)
+    description String   @db.Text
+    thumbnail   String
+    isFeatured  Boolean  @default(false)
+    status      Status   @default(DRAFT)
+    tags        String[] @default([])
+    view        Int      @default(0)
+    authorId String 
+}
