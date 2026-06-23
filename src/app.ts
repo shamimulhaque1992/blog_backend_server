@@ -51,6 +51,7 @@ app.post("/api/users/register", async (req: Request, res: Response) => {
 
   const user = await prisma.user.findUnique({
     where: { id: createdUsr.id, email: createdUsr.email || email },
+    omit: { password: true },
     include: {
       profileId: true,
     },
