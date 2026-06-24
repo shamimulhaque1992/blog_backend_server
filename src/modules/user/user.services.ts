@@ -3,6 +3,13 @@ import { prisma } from "../../lib/prisma";
 import config from "../../config";
 import { RegisterUserPayload } from "./user.interface";
 
+const getProfile = async (payload: Request) => {
+  const { id } = payload.body;
+  const userProfile = await prisma.profile.findUnique({
+    where: { userId: id },
+  });
+};
+
 const createUser = async (payload: RegisterUserPayload) => {
   const { name, email, password, profilePhoto } = payload;
 

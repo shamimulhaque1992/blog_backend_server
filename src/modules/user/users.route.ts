@@ -7,6 +7,7 @@ router.get("/", (req: Request, res: Response) => {
   res.send("Users route");
 });
 
+router.post("/me", userController.getProfile);
 router.post("/register", userController.createUser);
 
 export const userRouter = router;
