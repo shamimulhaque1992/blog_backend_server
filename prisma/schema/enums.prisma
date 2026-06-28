@@ -13,3 +13,15 @@ enum Status {
   DRAFT
   PUBLISHED
 }
+
+enum PostStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum CommentStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
