@@ -1,15 +1,15 @@
 enum Role {
-    USER
-    AUTHOR
-    ADMIN
+  USER
+  AUTHOR
+  ADMIN
 }
 
 enum ActiveStatus {
-    ACTIVE
-    BLOCKED
+  ACTIVE
+  BLOCKED
 }
 
 enum Status {
-    DRAFT
-    PUBLISHED
+  DRAFT
+  PUBLISHED
 }

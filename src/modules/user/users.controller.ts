@@ -9,18 +9,7 @@ import jwt from "jsonwebtoken";
 
 const getProfile = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const { accessToken } = req.cookies;
-
-    const verifiedToken = jwtUtils.verifyToken(
-      accessToken,
-      config.jwt_access_token_secret as string,
-    );
-
-    if (typeof verifiedToken === "string") {
-      throw new Error(verifiedToken);
-    }
-
-    const result = await userService.getProfile(verifiedToken.id);
+    const result = await userService.getProfile(req.user?.id as string);
 
     sendResponse(res, {
       success: true,
@@ -44,7 +33,22 @@ const createUser = catchAsync(
   },
 );
 
+const updateProfile = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const userId = req.user?.id as string;
+    const payload = req.body;
+    const result = await userService.updateProfile(userId, payload);
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Profile updated successfully",
+      data: result,
+    });
+  },
+);
+
 export const userController = {
   createUser,
   getProfile,
+  updateProfile,
 };
