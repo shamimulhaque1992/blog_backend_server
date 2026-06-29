@@ -5,28 +5,21 @@ import { auth } from "../../middlewares/auth";
 
 const router = Router();
 
-router.get("/comments/author/:authorId", commentController.getCommentsByAuthor);
-router.get(
-  "/comments/comments/:commentId",
-  commentController.getCommentsByCommentId,
-);
-router.post(
-  "/comments",
-  auth(Role.USER, Role.ADMIN),
-  commentController.createComment,
-);
+router.get("/author/:authorId", commentController.getCommentsByAuthor);
+router.get("/:commentId", commentController.getCommentsByCommentId);
+router.post("/", auth(Role.USER, Role.ADMIN), commentController.createComment);
 router.patch(
-  "/comments/:commentId",
+  "/:commentId",
   auth(Role.USER, Role.ADMIN),
   commentController.updateComment,
 );
 router.delete(
-  "/comments/:commentId",
+  "/:commentId",
   auth(Role.USER, Role.ADMIN),
   commentController.deleteComment,
 );
 router.patch(
-  "/comments/:commentId/moderate",
+  "/:commentId/moderate",
   auth(Role.ADMIN),
   commentController.moderateComment,
 );
