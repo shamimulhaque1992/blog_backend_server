@@ -1,8 +1,12 @@
 import { CommentStatus, PostStatus } from "../../../generated/prisma/client";
 import { prisma } from "../../lib/prisma";
-import { ICreatePostPayload, IUpdatePostPayload } from "./posts.interface";
+import {
+  ICreatePostPayload,
+  IGetAllPostsQuery,
+  IUpdatePostPayload,
+} from "./posts.interface";
 
-const getAllPosts = async () => {
+const getAllPosts = async (query: IGetAllPostsQuery) => {
   const result = prisma.post.findMany({
     include: {
       author: {
@@ -18,48 +22,6 @@ const getAllPosts = async () => {
 };
 const getPostsStats = async () => {
   const transactionResult = await prisma.$transaction(async (tx) => {
-    // const totalPosts = await tx.post.count();
-    // const totalPublishedPost = await tx.post.count({
-    //   where: {
-    //     status: PostStatus.PUBLISHED,
-    //   },
-    // });
-    // const totalDraftPost = await tx.post.count({
-    //   where: {
-    //     status: PostStatus.DRAFT,
-    //   },
-    // });
-    // const totalArchivedPost = await tx.post.count({
-    //   where: {
-    //     status: PostStatus.ARCHIVED,
-    //   },
-    // });
-
-    // const totalComments = await tx.comment.count();
-    // const totalApprovedComments = await tx.comment.count({
-    //   where: {
-    //     status: CommentStatus.APPROVED,
-    //   },
-    // });
-    // const totalRejectedComments = await tx.comment.count({
-    //   where: {
-    //     status: CommentStatus.REJECTED,
-    //   },
-    // });
-    // const totalPendingComments = await tx.comment.count({
-    //   where: {
-    //     status: CommentStatus.PENDING,
-    //   },
-    // });
-
-    // const viewAggregate = await tx.post.aggregate({
-    //   _sum: {
-    //     views: true,
-    //   },
-    // });
-
-    // const { views: totalViewCount } = viewAggregate._sum || 0;
-
     const [
       totalPosts,
       totalPublishedPost,

@@ -6,7 +6,8 @@ import httpStatus from "http-status";
 
 const getAllPosts = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const result = await postsServices.getAllPosts();
+    const query = req.query;
+    const result = await postsServices.getAllPosts(query);
     sendResponse(res, {
       success: true,
       statusCode: httpStatus.OK,
