@@ -6,6 +6,8 @@ import { userRouter } from "./modules/user/users.route";
 import { authRouter } from "./modules/auth/auth.route";
 import { postsRoute } from "./modules/posts/posts.route";
 import { commentRoute } from "./modules/comments/comment.route";
+import { notFound } from "./middlewares/notFound";
+import { globalErrorHandler } from "./middlewares/globaErrorHandler";
 
 const app: Application = express();
 app.use(express.json());
@@ -26,5 +28,9 @@ app.use("/api/auth", authRouter);
 
 app.use("/api/posts", postsRoute);
 app.use("/api/comments", commentRoute);
+
+app.use(notFound);
+
+app.use(globalErrorHandler);
 
 export default app;
