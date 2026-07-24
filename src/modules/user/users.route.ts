@@ -17,13 +17,13 @@ router.get("/", (req: Request, res: Response) => {
 
 router.get(
   "/me",
-  auth(Role.ADMIN, Role.USER, Role.ADMIN),
+  auth(Role.ADMIN, Role.USER, Role.AUTHOR),
   userController.getProfile,
 );
 
 router.put(
   "/my-profile",
-  auth(Role.ADMIN, Role.USER, Role.ADMIN),
+  auth(Role.ADMIN, Role.USER, Role.AUTHOR),
   userController.updateProfile,
 );
 router.post("/register", userController.createUser);
