@@ -3,6 +3,7 @@ import config from "../../config";
 import { prisma } from "../../lib/prisma";
 import { stripe } from "../../lib/stripe";
 import { SubscriptionStatus } from "../../../generated/prisma/enums";
+import { handleChangeSubscription, handleCheckoutCompleted } from "./subscription.utils";
 
 const checkout = async (userId: string) => {
   const transactionResult = await prisma.$transaction(async (tx) => {
@@ -63,42 +64,14 @@ const handleWebhook = async (payload: Buffer, signature: string) => {
   // Handle the event
   switch (event.type) {
     case "checkout.session.completed":
-      console.log(event.data.object);
-      const session: Stripe.Checkout.Session = event.data.object;
-      const userId = session.metadata?.userId;
-      const stripeCustomerId = session.customer as string;
-      const stripeSubscriptionId = session.subscription as string;
-
-      if (!userId || !stripeCustomerId || !stripeSubscriptionId) {
-        throw new Error("Missing metadata in stripe event");
-      }
-
-      const stripeSubscription =
-        await stripe.subscriptions.retrieve(stripeSubscriptionId);
-
-      const currentPeriodStart =
-        stripeSubscription.items.data[0]?.current_period_start!;
-      const currentPeriodEndInMilliseconds =
-        stripeSubscription.items.data[0]?.current_period_end!;
-
-      const currentPeriodEnd = new Date(currentPeriodEndInMilliseconds * 1000);
-
-      await prisma.subscription.upsert({
-        where: { userId },
-        create: {
-          userId,
-          stripeCustomerId,
-          stripeSubscriptionId,
-          status: SubscriptionStatus.ACTIVE,
-          currentPeriodEnd,
-        },
-        update: {},
-      });
+      await handleCheckoutCompleted(event.data.object);
 
       break;
     case "customer.subscription.updated":
+      await handleChangeSubscription(event.data.object);
       break;
     case "customer.subscription.deleted":
+      await handleChangeSubscription(event.data.object);
       break;
     default:
       // Unexpected event type
