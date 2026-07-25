@@ -30,7 +30,9 @@ const getPostsStats = catchAsync(
 const getPostById = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const { postId } = req.params;
-    const result = await postsServices.getPostById(postId as string);
+    const userId = req.user?.id as string;
+    console.log(req.user!)
+    const result = await postsServices.getPostById(postId as string, userId);
 
     sendResponse(res, {
       success: true,
@@ -63,6 +65,20 @@ const getMyPosts = catchAsync(
       success: true,
       statusCode: httpStatus.OK,
       message: "My posts fetched successfully",
+      data: result,
+    });
+  },
+);
+
+const getPremiumPosts = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const query = req.query;
+    const result = await postsServices.getPremiumPosts(query);
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Premium Posts retrieved successfully",
       data: result,
     });
   },
@@ -111,4 +127,5 @@ export const postsController = {
   createPost,
   updatePost,
   deletePost,
+  getPremiumPosts
 };
