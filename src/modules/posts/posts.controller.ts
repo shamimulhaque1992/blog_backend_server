@@ -12,7 +12,8 @@ const getAllPosts = catchAsync(
       success: true,
       statusCode: httpStatus.OK,
       message: "Posts fetched successfully",
-      data: result,
+      data: result.data,
+      meta: result.meta,
     });
   },
 );
@@ -31,7 +32,7 @@ const getPostById = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const { postId } = req.params;
     const userId = req.user?.id as string;
-    console.log(req.user!)
+    console.log(req.user!);
     const result = await postsServices.getPostById(postId as string, userId);
 
     sendResponse(res, {
@@ -79,7 +80,8 @@ const getPremiumPosts = catchAsync(
       success: true,
       statusCode: httpStatus.OK,
       message: "Premium Posts retrieved successfully",
-      data: result,
+      data: result.data,
+      meta: result.meta,
     });
   },
 );
@@ -127,5 +129,5 @@ export const postsController = {
   createPost,
   updatePost,
   deletePost,
-  getPremiumPosts
+  getPremiumPosts,
 };
