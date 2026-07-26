@@ -7,7 +7,7 @@ const router = Router();
 
 router.get("/author/:authorId", commentController.getCommentsByAuthor);
 router.get("/:commentId", commentController.getCommentByCommentId);
-router.post("/", auth(Role.USER, Role.ADMIN), commentController.createComment);
+router.post("/", auth(Role.USER, Role.ADMIN, Role.AUTHOR), commentController.createComment);
 router.patch(
   "/:commentId",
   auth(Role.USER, Role.ADMIN),
